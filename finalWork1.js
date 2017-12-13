@@ -8,6 +8,12 @@ var renderer;
                 renderer.setSize(width, height);
                 document.getElementById('canvas-frame').appendChild(renderer.domElement);
                 renderer.setClearColor(0xFFFFFF, 1.0);
+
+                stats = new Stats();
+                stats.domElement.style.position = 'absolute';
+                stats.domElement.style.left = '0px';
+                stats.domElement.style.top = '0px';
+                document.getElementById('canvas-frame').appendChild(stats.domElement);
             }
 
             var camera;
@@ -45,7 +51,7 @@ function initObject(){
     var color1 = new THREE.Color(0x444444),color2 = new THREE.Color(0xFF0000);
 
     //vexter
-    var p1 = new THREE.Vector3(-100,0,100);
+    var p1 = new THREE.Vector3(-500,0,100);
     var p2 = new THREE.Vector3(100,0,-100);
     geometry.vertices.push(p1);
     geometry.vertices.push(p2);
@@ -55,12 +61,29 @@ function initObject(){
     scene.add(line);
 }
 
+function initObject_mesh(){
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(-500,0,0));
+    geometry.vertices.push(new THREE.Vector3(500,0,0));
+
+    for(var i = 0;i<=20;i++){
+        var line = new THREE.Line(geometry,new THREE.LineBasicMaterial({color:0x000000,opacity:0.2}));
+        line.position.z = (i*50) -500;
+        scene.add(line);
+
+        // var line = new THREE.Line(geometry,new THREE.LineBasicMaterial({color:0x000000,opacity:0.2}));
+        // line.position.x = (i*50) -500;
+        // line.rotation.y = 90 * Math.PI / 180;
+        // scene.add(line);
+    }
+}
+
 function threeStart(){
     initThree();
     initCamera();
     initScene();
     initLight();
-    initObject();
+    initObject_mesh();
     renderer.clear();
     renderer.render(scene,camera);
 }
