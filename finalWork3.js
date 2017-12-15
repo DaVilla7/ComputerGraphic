@@ -1,24 +1,4 @@
-﻿
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title></title>
-    <meta charset="utf-8">
-    <style>
-        body {
-            margin: 0px;
-            background-color: #000000;
-            overflow: hidden;
-        }
-    </style>
-</head>
-<body>
-
-<script src="../js/three.js"></script>
-
-<script>
-
-    var camera, scene, renderer;
+var camera, scene, renderer;
     var mesh;
 
     init();
@@ -31,18 +11,23 @@
         document.body.appendChild( renderer.domElement );
         //
         camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera.position.x = 0;
+        camera.position.y = 50; 
         camera.position.z = 400;
         scene = new THREE.Scene();
 
-		var geometry = new THREE.CubeGeometry(150, 150, 150);
-        // 纹理坐标怎么弄
-        var url = "http://pic.qiantucdn.com/58pic/19/70/63/10K58PICMaf_1024.jpg"
 
-        var texture = THREE.ImageUtils.loadTexture(url,null,function(t)
+        var geometry = new THREE.PlaneGeometry( 500, 300, 1, 1 );
+        geometry.vertices[0].uv = new THREE.Vector2(0,0);
+        geometry.vertices[1].uv = new THREE.Vector2(2,0);
+        geometry.vertices[2].uv = new THREE.Vector2(2,2);
+        geometry.vertices[3].uv = new THREE.Vector2(0,2);
+        // 纹理坐标怎么弄
+        var texture = THREE.ImageUtils.loadTexture("http://n.sinaimg.cn/news/transform/w1000h500/20171212/xH_r-fypnsip9129414.jpg",null,function(t)
         {
         });
         var material = new THREE.MeshBasicMaterial({map:texture});
-        mesh = new THREE.Mesh( geometry,material );
+        var mesh = new THREE.Mesh( geometry,material );
         scene.add( mesh );
 
         //
@@ -57,13 +42,6 @@
     }
 
     function animate() {
-		mesh.rotation.y -= 0.01;
-		mesh.rotation.x -= 0.01;
         requestAnimationFrame( animate );
         renderer.render( scene, camera );
     }
-
-</script>
-
-</body>
-</html>
