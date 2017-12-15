@@ -20,8 +20,8 @@ var renderer;
             function initCamera() {
                 camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
                 camera.position.x = 0;
-                camera.position.y = 500;
-                camera.position.z = 500;
+                camera.position.y = 20;
+                camera.position.z = 1000;
                 camera.up.x = 0;
                 camera.up.y = 0;
                 camera.up.z = 1;
@@ -57,15 +57,17 @@ function initObject(){
     // mesh = new THREE.Mesh(geometry,material);
     // mesh.position = new THREE.Vector3(0,0,0);
     // scene.add(mesh);
-    var geometry = new THREE.PlaneGeometry(256,256,1,1);
+    var geometry = new THREE.PlaneGeometry(1024,807);
     geometry.vertices[0].uv = new THREE.Vector2(0,0);
-    geometry.vertices[1].uv = new THREE.Vector2(2,0);
-    geometry.vertices[2].uv = new THREE.Vector2(2,2);
-    geometry.vertices[3].uv = new THREE.Vector2(0,2);
+    geometry.vertices[1].uv = new THREE.Vector2(1,0);
+    geometry.vertices[2].uv = new THREE.Vector2(1,1);
+    geometry.vertices[3].uv = new THREE.Vector2(0,1);
     
-    var url = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1513232968402&di=62a12893df782a73cb5e28dcc3f936b7&imgtype=0&src=http%3A%2F%2Fimg2.3lian.com%2Fimg2007%2F13%2F22%2F20080409113032890.png";
-    var texture = THREE.ImageUtils.loadTexture(url,null,function(t){});
-    var material = new THREE.MeshBasicMaterial({color:0xFF0000});
+    var url = "ground.jpg";
+    var texture = THREE.ImageUtils.loadTexture(url,null,function(t){
+        renderer.render(scene,camera);
+    });
+    var material = new THREE.MeshBasicMaterial({map:texture});
     var mesh = new THREE.Mesh( geometry,material );
     // mesh.position.x = 10;
     // mesh.position.y  =12;
