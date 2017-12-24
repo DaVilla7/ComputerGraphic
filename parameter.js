@@ -44,12 +44,7 @@ bleacher.push(west_bleachers);
 
 
 //座位
-var seats_north_south_num = 15;
-var seats = [];
-var seats_north = [];
-var seats_north_level1 = [];
-var seats_north_level2 = [];
-var seats_north_level3 = [];
-var seats_north_level4 = [];
-var seats_north_level5 = [];
-var seats_north_level6 = [];
+var seats_north_south_num = 16;
+// var seats_south_south_num = 15;
+var seats_east_west_num = 9;
+// var seats_east_west_num = 9;

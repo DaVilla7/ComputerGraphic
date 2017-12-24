@@ -18,11 +18,12 @@ var renderer;
             }
 
             var camera;
+            var controls; //控制器
             function initCamera() {
                 camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-                camera.position.x = 400;
-                camera.position.y = 500;
-                camera.position.z = 1000;
+                camera.position.x = -800;
+                camera.position.y = 800;
+                camera.position.z = 800;
                 // camera.position.x = 900;
                 // camera.position.y = -500;
                 // camera.position.z = 200;
@@ -34,7 +35,7 @@ var renderer;
                 camera.up.z = 1;
                 camera.lookAt({
                     x : 0,
-                    y : -200,
+                    y : 0,
                     z : 0
                 });
             }
@@ -52,7 +53,7 @@ function initLight(){
 
     //方向光
     light = new THREE.DirectionalLight(color_palette.white,2.0);
-    light.position.set(800,800,800);
+    light.position.set(800,-800,800);
     light.castShadow = true;
     light.shadowDarkness = 0.6;
     scene.add(light);
@@ -82,6 +83,7 @@ function initLight(){
 
 //调色板
 var color_palette = {
+    white:0xFFFFFF,
     brown:0xD2A375,
     red:0xDA1418,
     gray:0x4C4B50,

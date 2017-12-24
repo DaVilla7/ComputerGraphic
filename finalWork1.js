@@ -63,7 +63,7 @@ function initObject(){
     geometry.vertices[2].uv = new THREE.Vector2(1,1);
     geometry.vertices[3].uv = new THREE.Vector2(0,1);
     
-    var url = "img/ground.jpg";
+    var url = "ground.jpg";
     var texture = THREE.ImageUtils.loadTexture(url,null,function(t){
         renderer.render(scene,camera);
     });
