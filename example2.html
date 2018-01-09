@@ -1,0 +1,171 @@
+<!DOCTYPE html>  
+<html lang="en">  
+    <head>  
+        <title>three.js webgl - trackball controls</title>  
+        <meta charset="utf-8">  
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">  
+        <style>  
+            body {  
+                color: #000;  
+                font-family:Monospace;  
+                font-size:13px;  
+                text-align:center;  
+                font-weight: bold;  
+                background-color: #fff;  
+                margin: 0px;  
+                overflow: hidden;  
+            }  
+            #info {  
+                color:#000;  
+                position: absolute;  
+                top: 0px; width: 100%;  
+                padding: 5px;  
+            }  
+            a {  
+                color: red;  
+            }  
+        </style>  
+    </head>  
+  
+    <body>  
+        <div id="container"></div>  
+        
+        <script src="js/three.js"></script>  
+  
+        <script src="js/examples/js/controls/TrackballControls.js"></script>  
+  
+        <script src="js/examples/js/Detector.js"></script>  
+        <script src="js/examples/js/libs/stats.min.js"></script>  
+  
+        <script>  
+          
+            //许多官方案例都以此开头,其实就是检测当前浏览器是否支持或者开启了WebGL  
+            if ( ! Detector.webgl ) Detector.addGetWebGLMessage();  
+  
+            //声明对象  
+            var container; //容器,就是html中的div  
+            var stats; //性能监视器(就是那个显示FPS和ms的小框框)  
+            var camera; //相机  
+            var controls; //本节重点(控制器)  
+            var scene;  //场景  
+            var renderer; //渲染器  
+            var cross; //声明了,没用到,不知道是啥玩意  
+              
+            init(); //初始化方法(将要用到的东西都进行初始化)  
+            animate(); //进行游戏循环,以及调用 controls.update()  
+  
+              
+            function init() {  
+                  
+                //透视投影相机THREE.PerspectiveCamera(近大远小,使用的较为普遍)  
+                camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );//还有一种是正投影相机THREE.OrthographicCamera,不论远近高低,大小比例都相同(机械图,工程图等为了显示尺寸有时用)  
+                camera.position.z = 500; //相机位置,根据右手坐标系进行判断  
+  
+                //今天内容的主角,我并没有在官方文档里找到相关的说明,根据案例里的使用进行摸索  
+                controls = new THREE.TrackballControls( camera ); //看来是要给controls控制器传递一个当前使用的相机camera参数  
+                controls.rotateSpeed = 1.0;  //按住鼠标左键后拖动查看时的旋转速度  
+                controls.zoomSpeed = 1.2;   //用滚轮调整大小(远近)时候的速度  
+                controls.panSpeed = 0.8;    //按住鼠标右键后的平移速度  
+                controls.noZoom = false;    //如果设置为true, 则禁用 鼠标滚轮调整大小(远近)的功能  
+                controls.noPan = false;     //如设置为true, 则禁用 按下鼠标右键平移的功能  
+                controls.minDistance = 200;   //设置滚轮能滚到的最近距离  
+                controls.maxDistance = 1000;   //设置滚轮能滚到的最远距离  
+                controls.staticMoving = true;   //试了一下, 如果设置为false, 则移动速度贼鸡儿快,嗖的一下就不见了, 具体是干啥玩意的没摸清  
+                controls.dynamicDampingFactor = 0.3; //动态阻尼, 蛤? 我也不知道是啥,翻译过来就是  
+                controls.keys = [ 65, 83, 68 ];  //注释掉貌似效果也没啥区别,反正我是没发现  
+  
+                /* 
+                    原生JS的方法,查看TrackballControls.js源码,对该方法进行了一定程度的重写,是绑定一些,鼠标点击,移动,滚轮,键盘等事件的 
+                    这个案例中如果不写这行代码,就无法用controls查看图片了,但是其他案例中并没有该行,但是功能却依然能实现,不知为何 
+                */  
+                controls.addEventListener( 'change', render );  
+                  
+                // world  
+                scene = new THREE.Scene(); //场景  
+                scene.background = new THREE.Color( 0xcccccc ); //给场景设置背景色  
+                  
+                /* 
+                FogExp2( hex, density ) --指数雾 
+                这个hex参数被传递给 Color 构造函数来设置颜色属性。hex是一个十六进制整数或CSS样式的字符串。 
+                */  
+                scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );  
+                  
+                /* 
+                CylinderGeometry--创建圆柱几何体模型的类 
+                CylinderGeometry(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength) 
+                radiusTop — 圆柱体顶端半径. 默认值为20. 
+                radiusBottom — 圆柱体底端半径. 默认值为20. 
+                height — 圆柱体高度. 默认值为100. 
+                radiusSegments — 围绕圆柱体周长的分割面数量. 默认值为8. 
+                heightSegments — 沿圆柱体高度的分割面数量. 默认值为1. 
+                openEnded — 指示圆柱体两端是打开还是覆盖的布尔值. 默认值为false, 意思是覆盖. 
+                thetaStart — 第一个分割面的开始角度, 默认值 = 0 (3点钟方向). 
+                thetaLength — 圆形扇形的圆心角通常称为θ。默认为2 * Pi，这形成了一个完整的圆柱体. 
+                */  
+                var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );   
+  
+                //材质  
+                var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );  
+  
+                  
+                for ( var i = 0; i < 500; i ++ ) {  
+                    var mesh = new THREE.Mesh( geometry, material );  
+                    mesh.position.x = ( Math.random() - 0.5 ) * 1000;  
+                    mesh.position.y = ( Math.random() - 0.5 ) * 1000;  
+                    mesh.position.z = ( Math.random() - 0.5 ) * 1000;  
+                
+
+                // <span style="white-space:pre;">                 </span>//更新对象的局部变换。  
+                    mesh.updateMatrix(); //注意,如果注释掉该行,那么下一行为false时效果不能正确显示,为true时效果不受影响  
+                    // <span style="white-space:pre;">                 </span>//当设置为true时会自动更新矩阵，包括计算位置矩阵（旋转或四元数），逐帧缩放，也会重新计算世界矩阵（matrixWorld）属性。缺省值 – true  
+                    mesh.matrixAutoUpdate = false;   
+                    // <span style="white-space:pre;">                 </span>//将mesh放到场景中  
+                    scene.add( mesh );  
+                }  
+                  
+                // 光照效果  
+                // 方向光(类似太阳)  
+                var light = new THREE.DirectionalLight( 0xffffff );  
+                light.position.set( 1, 1, 1 );  
+                scene.add( light );  
+                var light = new THREE.DirectionalLight( 0x002288 );  
+                light.position.set( -1, -1, -1 );  
+                scene.add( light );  
+                // 环境光,无处不在  
+                var light = new THREE.AmbientLight( 0x222222 );  
+                scene.add( light );  
+                  
+                // 渲染器  
+                renderer = new THREE.WebGLRenderer( { antialias: false } );  
+                renderer.setPixelRatio( window.devicePixelRatio );  
+                renderer.setSize( window.innerWidth, window.innerHeight ); //设置尺寸  
+                container = document.getElementById( 'container' ); //div块  
+                container.appendChild( renderer.domElement ); //把渲染器的dom元素追加进div, 基本所有案例都是这个套路,照着写就完事了  
+                stats = new Stats(); //性能监视器  
+                container.appendChild( stats.dom );  
+                //  
+                window.addEventListener( 'resize', onWindowResize, false );  
+                //  
+                render();  
+            }  
+              
+            //官方相关案例里都给出了这个方法,看样子像是适应窗口的功能,照葫芦画瓢  
+            function onWindowResize() {  
+                camera.aspect = window.innerWidth / window.innerHeight;  
+                camera.updateProjectionMatrix();  
+                renderer.setSize( window.innerWidth, window.innerHeight );  
+                controls.handleResize();  
+                render();  
+            }  
+            function animate() {  
+                requestAnimationFrame( animate );  
+                controls.update(); //注意,调用了该方法,才有效果  
+            }  
+            function render() {  
+                renderer.render( scene, camera );  
+                stats.update();  
+            }  
+        </script>  
+  
+    </body>  
+</html>  

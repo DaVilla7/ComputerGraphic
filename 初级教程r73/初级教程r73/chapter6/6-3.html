@@ -36,7 +36,9 @@
 
 		var geometry = new THREE.CubeGeometry(150, 150, 150);
         // 纹理坐标怎么弄
-        var texture = THREE.ImageUtils.loadTexture("textures/2.jpg",null,function(t)
+        var url = "http://img5.imgtn.bdimg.com/it/u=3077887221,2304849486&fm=27&gp=0.jpg"
+
+        var texture = THREE.ImageUtils.loadTexture(url,null,function(t)
         {
         });
         var material = new THREE.MeshBasicMaterial({map:texture});

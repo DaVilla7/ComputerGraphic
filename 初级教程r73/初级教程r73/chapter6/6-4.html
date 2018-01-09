@@ -28,7 +28,7 @@
 			#lbl_right { text-align:left; right:0px }
 
 			.g { color:#aaa }
-			.c { color:#fa0 }
+			.c { color:rgb(216, 199, 166) }
 
 			a { color:red }
 
@@ -182,8 +182,9 @@
 
 
 				};
+				var url = "http://n.sinaimg.cn/news/transform/w1000h500/20171212/xH_r-fypnsip9129414.jpg"
 
-				var texturePainting = THREE.ImageUtils.loadTexture( "textures/4.jpg", THREE.UVMapping, callbackPainting ),
+				var texturePainting = THREE.ImageUtils.loadTexture( url, THREE.UVMapping, callbackPainting ),
 					texturePainting2 = new THREE.Texture(),
 					materialPainting = new THREE.MeshBasicMaterial( { color: 0xffffff, map: texturePainting } ),
 					materialPainting2 = new THREE.MeshBasicMaterial( { color: 0xffccaa, map: texturePainting2 } );
