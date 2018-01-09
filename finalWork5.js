@@ -50,9 +50,15 @@ var renderer;
                 // camera.position.z = 500; //相机位置,根据右手坐标系进行判断  
                 //今天内容的主角,我并没有在官方文档里找到相关的说明,根据案例里的使用进行摸索  
                 controls = new THREE.TrackballControls( camera ); //看来是要给controls控制器传递一个当前使用的相机camera参数  
+<<<<<<< HEAD
                 controls.rotateSpeed = 2.0;  //按住鼠标左键后拖动查看时的旋转速度  
                 controls.zoomSpeed = 1.5;   //用滚轮调整大小(远近)时候的速度  
                 controls.panSpeed = 2.0;    //按住鼠标右键后的平移速度  
+=======
+                controls.rotateSpeed = 1.0;  //按住鼠标左键后拖动查看时的旋转速度  
+                controls.zoomSpeed = 1.2;   //用滚轮调整大小(远近)时候的速度  
+                controls.panSpeed = 0.8;    //按住鼠标右键后的平移速度  
+>>>>>>> f539326a750d966b83eedaf9ef96bdab790267da
                 controls.noZoom = false;    //如果设置为true, 则禁用 鼠标滚轮调整大小(远近)的功能  
                 controls.noPan = false;     //如设置为true, 则禁用 按下鼠标右键平移的功能  
                 controls.minDistance = 0;   //设置滚轮能滚到的最近距离  
@@ -74,6 +80,7 @@ function initScene(){
     // scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );  
 }
 
+<<<<<<< HEAD
 var ambientLight, hemisphereLight, shadowLight;
 
 function createLights() {
@@ -100,6 +107,8 @@ function createLights() {
 }
 
 
+=======
+>>>>>>> f539326a750d966b83eedaf9ef96bdab790267da
 var light;
 function initLight(){
     //环境光
@@ -107,11 +116,19 @@ function initLight(){
     // scene.add( enLight );
 
     //方向光
+<<<<<<< HEAD
     light = new THREE.DirectionalLight(color_palette.white,0.5);
     light.position.set(800,800,800);
     light.castShadow = true;
     light.shadowDarkness = 0.3;
     // scene.add(light);
+=======
+    light = new THREE.DirectionalLight(color_palette.white,2.0);
+    light.position.set(800,800,800);
+    light.castShadow = true;
+    light.shadowDarkness = 0.3;
+    scene.add(light);
+>>>>>>> f539326a750d966b83eedaf9ef96bdab790267da
 
     // light1 = new THREE.DirectionalLight(color_palette.white,1.0);
     // light1.position.set(200,800,800);
@@ -254,7 +271,10 @@ function threeStart(){
     initScene();
     
     initObject();
+<<<<<<< HEAD
     createLights();
+=======
+>>>>>>> f539326a750d966b83eedaf9ef96bdab790267da
     initLight();
     animate();
     // animation();

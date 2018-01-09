@@ -16,11 +16,19 @@ function colume(x,y,radius,length){
 
 function facilities_screen(){
     colume(-6.0,-5.,0.2,2.5);
+<<<<<<< HEAD
     var url = "img/board6.jpg";
     var texture = THREE.ImageUtils.loadTexture(url,null,function(t){
         renderer.render(scene,camera);
     });
     var cube = new THREE.Mesh(new THREE.CubeGeometry(5.12*scale, 0.4*scale, 3.23*scale),
+=======
+    var url = "img/board.jpg";
+    var texture = THREE.ImageUtils.loadTexture(url,null,function(t){
+        renderer.render(scene,camera);
+    });
+    var cube = new THREE.Mesh(new THREE.CubeGeometry(3.8*scale, 0.4*scale, 2.5*scale),
+>>>>>>> f539326a750d966b83eedaf9ef96bdab790267da
     new THREE.MeshLambertMaterial({
             // color: 0x2894FF,
             map:texture,
@@ -28,6 +36,11 @@ function facilities_screen(){
         })
     );  
 
+<<<<<<< HEAD
+=======
+    
+
+>>>>>>> f539326a750d966b83eedaf9ef96bdab790267da
     cube.position.set(-6.0*scale,-5*scale,(2.5+2.5/2)*scale);
      // scene.add(bleacher[0][0]);
      cube.castShadow = true;
