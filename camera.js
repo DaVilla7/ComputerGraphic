@@ -6,7 +6,7 @@ var textureCamera, mainCamera;
 
 // intermediate scene for reflecting the reflection
 var screenScene, screenCamera, firstRenderTarget, finalRenderTarget;
-
+var planeScreen;
 function movingCamera(){
 
     var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
@@ -16,12 +16,12 @@ function movingCamera(){
 	scene.add(textureCamera);
 
     var materialArray = [];
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zneg.png' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/laliga.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/laliga.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/laliga.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/laliga.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/laliga.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'img/laliga.jpg' ) }));
 	var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
 	var MovingCubeGeom = new THREE.CubeGeometry( 0.5*scale, 0.5*scale, 0.5*scale, 1, 1, 1, materialArray );
 	MovingCube = new THREE.Mesh( MovingCubeGeom, MovingCubeMat );
@@ -49,12 +49,12 @@ function movingCamera(){
     var planeGeometry = new THREE.CubeGeometry( 3.95*scale, 2.20*scale, 1, 1 );
 	finalRenderTarget = new THREE.WebGLRenderTarget( 512, 512, { format: THREE.RGBFormat } );
 	var planeMaterial = new THREE.MeshBasicMaterial( { map: finalRenderTarget } );
-	var plane = new THREE.Mesh( planeGeometry, planeMaterial );
-    plane.position.set(-5.85*scale,-4.86*scale,(2.5+2.5/2)*scale);
+	planeScreen = new THREE.Mesh( planeGeometry, planeMaterial );
+    planeScreen.position.set(-500*scale,-500*scale,(-500)*scale); 	
     // plane.position.set(-2*scale,-3*scale,(2.5+2.5/2)*scale);
-    plane.rotation.x = 90 * Math.PI / 180;
-    plane.rotation.y = -45 * Math.PI / 180;
-	// scene.add(plane);
+    planeScreen.rotation.x = 90 * Math.PI / 180;
+    planeScreen.rotation.y = -45 * Math.PI / 180;
+	scene.add(planeScreen);
 	// pseudo-border for plane, to make it easier to see
 	
     
@@ -96,6 +96,7 @@ function update_movingCamera()
 		MovingCube.rotation.set(0,0,0);
 	}
 	
+	
 	// update the texture camera's position and look direction
 	var relativeCameraOffset = new THREE.Vector3(0,0,1);
 	var cameraOffset = MovingCube.matrixWorld.multiplyVector3( relativeCameraOffset );
@@ -105,6 +106,6 @@ function update_movingCamera()
 	var relativeCameraLookOffset = new THREE.Vector3(0,0,-1);
 	var cameraLookOffset = relativeCameraLookOffset.applyMatrix4( MovingCube.matrixWorld );
 	textureCamera.lookAt( cameraLookOffset );
-				
+		
 	stats.update();
 }

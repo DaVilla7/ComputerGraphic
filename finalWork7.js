@@ -30,10 +30,10 @@ var renderer;
 
             var camera;
             function initCamera() {
-                camera = new THREE.PerspectiveCamera(90, width / height, 1, 10000);
-                camera.position.x = -800;
-                camera.position.y = 800;
-                camera.position.z = 800;
+                camera = new THREE.PerspectiveCamera(90, width / height, 1, 100000);
+                camera.position.x = -250;
+                camera.position.y = 250;
+                camera.position.z = 250;
                 // camera.position.x = 900;
                 // camera.position.y = -500;
                 // camera.position.z = 200;
@@ -149,6 +149,7 @@ function initLight(){
 
 //调色板
 var color_palette = {
+    black:0x00000,
     white:0xFFFFFF,
     brown:0xD2A375,
     red:0xDA1418,
@@ -158,7 +159,7 @@ var color_palette = {
 }
 
 //比例尺
-var scale = 100;
+var scale = 50;
 var ground_length = 8*scale;
 var ground_width = 5*scale;
 var cube;
@@ -188,9 +189,12 @@ function initObject_ground(){
 }
 
 function initObject_ground_extend(){
-    
+    var url = "img/extend2.png";
+    var texture = THREE.ImageUtils.loadTexture(url,null,function(t){
+        renderer.render(scene,camera);
+    });
     var geometry = new THREE.PlaneGeometry(20*scale,15*scale);
-    var material = new THREE.MeshLambertMaterial({color:color_palette.deep_green1});
+    var material = new THREE.MeshLambertMaterial({map:texture});
     var mesh = new THREE.Mesh( geometry,material );
 
     mesh.receiveShadow = true;
@@ -281,7 +285,9 @@ function animation(){
 }
 
 function animate() {
+    
     update_movingCamera();
+    updata_scene();
     requestAnimationFrame( animate );
     render();
     starRotation();
@@ -339,10 +345,52 @@ function render() {
     renderer.render( scene, camera );  
     // stats.update();  
 }  
-// function onWindowResize() {  
-//     camera.aspect = window.innerWidth / window.innerHeight;  
-//     camera.updateProjectionMatrix();  
-//     renderer.setSize( window.innerWidth, window.innerHeight );  
-//     controls.handleResize();  
-//     render();  
-// }  
+
+var soptLight1 = false;
+var soptLight2 = false;
+var visScreen = false;
+var keyboardScene = new THREEx.KeyboardState();
+function updata_scene(){
+    
+    // var clock = new THREE.Clock();
+    
+    //开场地灯一
+    if ( keyboardScene.pressed("N") ) 
+	{    
+		if(!soptLight1){
+            pointLight1.position.set(5.45*scale,-2.95*scale,(2.8+0.375/2)*scale);
+            
+            soptLight1 = !soptLight1;
+        }else{
+            pointLight1.position.set(-500*scale,-500*scale,-500*scale);
+            
+            soptLight1 = !soptLight1;
+        }
+    }
+    //开场地灯二
+    if ( keyboardScene.pressed("M") ) 
+	{    
+		if(!soptLight2){
+            
+            pointLight2.position.set(4.675*scale,-3.74*scale,(2.8+0.375/2)*scale);
+            soptLight2 = !soptLight2;
+        }else{
+            
+            pointLight2.position.set(-500*scale,-500*scale,-500*scale);
+            soptLight2 = !soptLight2;
+        }
+    }
+    if ( keyboardScene.pressed("P") ) 
+	{    
+		if(!visScreen){
+            planeScreen.position.set(-5.85*scale,-4.86*scale,(2.5+2.5/2)*scale);
+            visScreen = !visScreen;
+        }else{
+            planeScreen.position.set(-500*scale,-500*scale,(-500)*scale);
+            visScreen = !visScreen;
+        }
+    }
+    
+
+	stats.update();
+}

@@ -43,7 +43,7 @@ function initSkyBox(){
     
     var sphereGeom =  new THREE.SphereGeometry( .4*scale, .32*scale, .16*scale ); 
     var earthTexture = THREE.ImageUtils.loadTexture( 'images/earth-day.jpg' );
-	var earthMaterial = new THREE.MeshLambertMaterial( { map: earthTexture, color: 0xff8800, ambient: 0x0000ff } );
+	var earthMaterial = new THREE.MeshLambertMaterial( { map: earthTexture } );
 	earth = new THREE.Mesh( sphereGeom.clone(), earthMaterial );
 	earth.position.set(-2*scale, -5*scale, 4*scale);
     scene.add( earth );	
